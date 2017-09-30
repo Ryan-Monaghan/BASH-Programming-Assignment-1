@@ -1,0 +1,90 @@
+#!/bin/bash
+
+#OS Bash Shell Programming Assignment 1
+#Name: Ryan Monaghan
+#ID: R00115129
+#Class: ITS2-A
+
+
+#COMMENTED CODE#
+
+
+#STEP 1
+#Prompt user for name of the Source Directory.
+echo -n "Please enter the Source Directory of the file you wish to copy: "
+#directory name is stored within directory variable 
+read srcDirectory #Store user input into scrDirectory variable. 
+echo #Newline
+
+#STEP 2 & 3
+#check if the srcDirectory variable contains text
+#if blank, thowback error to user.
+if test -z ${srcDirectory}
+	then
+		#redirect error from ch1 to ch2.
+		echo "${0}:ERROR: No  directory name entered." 1>&2
+		echo "${0}:USAGE: Please your Directory name." 1>&2
+		exit 1 #exit program.
+fi #endif
+
+#STEP 4 & 5
+#check if directoryName exists
+#if not, throwback error message
+if test ! -d "${srcDirectory}"
+	then
+		echo "${0}:ERROR: Source directory '${srcDirectory}' does not exist!" 1>&2
+		echo "${0}:USAGE: Enter a correct directory." 1>&2
+		exit 2
+fi
+
+#STEP 6 Prompt the user to enter the file name that is to be copied.
+echo -n "Please enter the name of the file you wish to copy: "
+read srcFile #Store input into scrFile variable.
+echo #Newline.
+
+#STEP 7 & 8
+if test -z "${srcFile}" #Verify the user has input text into srcFile. If blank, throw error.
+	then
+		echo "${0}:ERROR: No file name entered." 1>&2
+		echo "${0}:USAGE: Enter a file name." 1>&2
+		exit 3
+fi
+
+#STEP 9 & 10
+if test ! -e "${srcDirectory}/${srcFile}" #verify the filename entered by the user is valid, and exists within parent directory, otherwise, throw error.
+	then
+		echo "${0}:ERROR: File named '${srcFile}' does not exist." 1>&2
+		echo "${0}:USAGE: Enter a valid file name." 1>&2
+		exit 4
+fi
+
+
+#STEP 11
+echo -n "Please enter the name of the Destination Directory you wish to create: " #Prompt user for the name they would like to assign to the Destination Directory.
+read destDirectory #Store user input into destDirectory variable.
+echo #newline
+
+#STEP 12 & 13
+if test -z ${destDirectory} #verify destDirectory variable has not been left blank, if so, throw error & exit. 
+	then
+		echo "${0}:ERROR: No name entered for Destination Directory entered." 1>&2
+		echo "${0}:USAGE: Please enter a Destination Directory." 1>&2
+		exit 5
+fi
+
+#STEP 14 & 15
+if test  -d "${destDirectory}" #verify the directory name the user has entered is unique, if not, throw error & exit.
+	then
+		echo "${0}:ERROR: Destination named '${destDirectory}' already exists." 1>&2
+		echo "${0}:USAGE: Please enter a new Destination Directory name." 1>&2
+		exit 6
+fi
+
+#STEP 16
+mkdir ${destDirectory} #If the user's chosen directory name is unique, create a new directory, assigning it the name stored in destDirectory variable.
+
+#STEP 18
+cp "${srcDirectory}/${srcFile}" "${destDirectory}" #Copy the file (srcFile) from its parent directory (srcDirectory) into the destination directory created by the user in the previous step (destDirectory).
+
+#Display to the user that the cp operation has been sucessful.
+echo "The file titled "${srcFile}" has successfully been copied from "${srcDirectory}" and placed into "${destDirectory}"!"
